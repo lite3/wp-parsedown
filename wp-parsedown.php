@@ -16,6 +16,7 @@ if ( ! class_exists( 'WP_PARSEDOWN' ) ) :
 include_once ( dirname(__FILE__) . '/wp-common/plugin_abstract.php' );
 include_once ( dirname(__FILE__) . '/lib/parsedown/Parsedown.php');
 include_once ( dirname(__FILE__) . '/lib/parsedown-extra/ParsedownExtra.php');
+include_once ( dirname(__FILE__) . '/ParsedownPrettify.php');
 
 /**
  * main wp-ghost class
@@ -38,7 +39,7 @@ class WP_PARSEDOWN extends PluginAbstract {
 		$this->admin_css_handle = $this->plugin_constant . '-admin-css';
 		$this->admin_css_url = $this->common_url . 'wp-admin.css';
 
-		$this->parsedown = new ParsedownExtra();
+		$this->parsedown = new ParsedownPrettify();
 	}
 
 	/**
