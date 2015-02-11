@@ -17,19 +17,6 @@ class ParsedownPrettify extends ParsedownExtra
 {
 
     #
-    # Code
-
-    protected function identifyCodeBlock($Line)
-    {
-        $Block = parent::identifyCodeBlock($Line);
-        if (isset($Block))
-        {
-            unset($Block['element']['text']['name']);
-            return $Block;
-        }
-    }
-
-    #
     # Fenced Code
 
     protected function identifyFencedCode($Line)
@@ -37,11 +24,8 @@ class ParsedownPrettify extends ParsedownExtra
         $Block = parent::identifyFencedCode($Line);
         if (isset($Block))
         {
+            # add class prettyprint 
             $Block['element']['attributes'] = array('class' => 'prettyprint');
-            if (!isset($Block['element']['text']['attributes']))
-            {
-                unset($Block['element']['text']['name']);
-            }
             return $Block;
         }
     }
@@ -68,7 +52,9 @@ class ParsedownPrettify extends ParsedownExtra
 
             if (isset($Element['handler']))
             {
-                if (isset($Element['text']['name']))
+                # FencedCode or CodeBlock
+                # don't print code tag
+                if ($Element['name'] != 'pre')
                 {
                     $markup .= $this->$Element['handler']($Element['text']);
                 }
