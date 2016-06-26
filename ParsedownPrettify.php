@@ -13,19 +13,20 @@
 #
 #
 
-class ParsedownPrettify extends ParsedownExtra
+class ParsedownPrettify extends Parsedown
+// class ParsedownPrettify extends ParsedownExtra
 {
 
     #
     # Fenced Code
 
-    protected function identifyFencedCode($Line)
+    protected function blockFencedCode($Line)
     {
-        $Block = parent::identifyFencedCode($Line);
+        $Block = parent::blockFencedCode($Line);
         if (isset($Block))
         {
             # add class prettyprint 
-            $Block['element']['attributes'] = array('class' => 'prettyprint');
+            $Block['element']['text']['attributes'] = array('class' => 'prettyprint');
             return $Block;
         }
     }
@@ -42,6 +43,11 @@ class ParsedownPrettify extends ParsedownExtra
         {
             foreach ($Element['attributes'] as $name => $value)
             {
+                if ($value === null)
+                {
+                    continue;
+                }
+
                 $markup .= ' '.$name.'="'.$value.'"';
             }
         }
@@ -56,7 +62,7 @@ class ParsedownPrettify extends ParsedownExtra
                 # don't print code tag
                 if ($Element['name'] != 'pre')
                 {
-                    $markup .= $this->$Element['handler']($Element['text']);
+                    $markup .= $this->{$Element['handler']}($Element['text']);
                 }
                 else
                 {
