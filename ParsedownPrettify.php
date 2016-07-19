@@ -54,6 +54,14 @@ class ParsedownPrettify extends Parsedown
 
         if (isset($Element['text']))
         {
+            # add attributes, like class
+            if ($Element['name'] == 'pre' && isset($Element['text']['attributes']))
+            {
+                foreach ($Element['text']['attributes'] as $key => $value) {
+                    $markup .= " $key=\"$value\"";
+                }
+            }
+
             $markup .= '>';
 
             if (isset($Element['handler']))
